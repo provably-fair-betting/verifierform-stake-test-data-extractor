@@ -28,7 +28,7 @@ pnpm add -D puppeteer-real-browser
 
 ## Configure
 
-Review [scripts/config/generator-config.js](/Users/kyranrana/Projects/2025/freelance/provably-fair-betting/verifierform-stake-testdata/scripts/config/generator-config.js) before running the generator. It currently points at Stake's calculation page and writes output into `scripts/samples`.
+Review [scripts/config/generator-config.js](/Users/kyranrana/Projects/2025/freelance/provably-fair-betting/verifierform-stake-testdata/scripts/config/generator-config.js) before running the generator. It currently points at Stake's calculation page and writes output into `output/`.
 
 | Option              | Type     | Required | Purpose                                                                           |
 | ------------------- | -------- | -------- | --------------------------------------------------------------------------------- |
@@ -97,7 +97,7 @@ pnpm generate -- --game scarab-spins --nonce-count 100 --bonus-count 20 --retrig
 
 Verbose mode logs per-sample progress, including nonce when the current game uses one, plus any active select values. Normal mode logs startup, page readiness, per-game start, and output file completion.
 
-Generated files are written to [scripts/samples](/Users/kyranrana/Projects/2025/freelance/provably-fair-betting/verifierform-stake-testdata/scripts/samples).
+Generated files are written to [output/](/Users/kyranrana/Projects/2025/freelance/provably-fair-betting/verifierform-stake-testdata/output).
 
 ## Cloudflare / Turnstile
 
@@ -209,37 +209,8 @@ verifierform-stake-testdata/
     config/
       generator-config.js        # URL, pacing, output directory, and timeout settings
     games/
-      baccarat.js                # Baccarat config with player, dealer, and decider cards
-      bars.js                    # Bars config with slot-style sample categories
-      blackjack.js               # Blackjack config with player, dealer, and remaining deck cards
-      cases.js                   # Cases config
-      crash.js                   # Crash config
-      chicken.js                 # Chicken config
-      darts.js                   # Darts config and SVG parsing bridge
-      diamonds.js                # Diamonds config
-      dice.js                    # Dice config
-      dragon-tower.js            # Dragon Tower config
-      drill.js                   # Drill config
-      flip.js                    # Flip config
-      hilo.js                    # Hilo config that keeps the first 52 dealt cards
-      keno.js                    # Keno config
-      limbo.js                   # Limbo config
-      mines.js                   # Mines config
-      moles.js                   # Moles config
-      packs.js                   # Packs config
-      plinko.js                  # Plinko config
-      primedice.js               # PrimeDice config
-      pump.js                    # Pump config
-      rock-paper-scissors.js     # Rock Paper Scissors config
-      roulette.js                # Roulette config
-      scarab-spins.js            # Scarab Spins slot config
-      slide.js                   # Slide config
-      snakes.js                  # Snakes config
-      tarot.js                   # Tarot config
-      tome-of-life.js            # Tome of Life slot config
       index.js                   # exported game list and extension point for more games
-      video-poker.js             # Video Poker config with initial and coming hands
-      wheel.js                   # Wheel config
+      {game}.js                  # one config file per supported game
     helpers/
       calculation-page.js        # calculator page readiness, loader checks, and Cloudflare waiting
       darts-color.js             # darts-specific color normalization and multiplier lookup
@@ -270,9 +241,9 @@ verifierform-stake-testdata/
       snakes-roll-lines.js       # snakes output line extraction
       tarot-selected-multipliers.js # tarot selected multiplier extraction
       test-id-output.js          # strategy factory for known data-testid output nodes
-    samples/
-      2026-.../                  # timestamped run directories containing generated game JSON files
-      .gitkeep                   # keeps the generated output directory in the project
+  output/
+    {timestamp}/                 # timestamped run directories containing generated game JSON files
+    .gitkeep                     # keeps the output directory in the project
 ```
 
 ## Exact Commands
