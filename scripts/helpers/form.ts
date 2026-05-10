@@ -1,7 +1,9 @@
 import { byTestId, calculationTestId } from "./dom.js";
 import { sleep } from "./wait.js";
 
-import type { InteractionOptions, Page } from "../types.js";
+import type { Page } from "rebrowser-puppeteer-core";
+
+import type { InteractionOptions } from "../types.js";
 
 type FormControlMode = "input" | "select";
 

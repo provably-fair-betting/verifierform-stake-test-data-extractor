@@ -1,6 +1,4 @@
-import type { Browser, Page } from "rebrowser-puppeteer-core";
-
-export type { Browser, Page };
+import type { Page } from "rebrowser-puppeteer-core";
 
 export type Logger = {
   verboseEnabled: boolean;

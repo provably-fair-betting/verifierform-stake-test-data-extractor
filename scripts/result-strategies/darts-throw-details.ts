@@ -1,4 +1,6 @@
-import type { Page, ResultStrategy } from "../types.js";
+import type { Page } from "rebrowser-puppeteer-core";
+
+import type { ResultStrategy } from "../types.js";
 
 type DartsThrowDetails = {
   detailsText: string;

@@ -1,6 +1,8 @@
 import { sleep } from "./wait.js";
 
-import type { Browser, Logger, Page } from "../types.js";
+import type { Browser, Page } from "rebrowser-puppeteer-core";
+
+import type { Logger } from "../types.js";
 
 type PageState = {
   title: string;

@@ -21,11 +21,12 @@ import { setCalculationInput, setCalculationSelect } from "./helpers/form.js";
 import { writeJson } from "./helpers/output.js";
 import { sleep } from "./helpers/wait.js";
 
+import type { Page } from "rebrowser-puppeteer-core";
+
 import type {
   Game,
   InteractionOptions,
   Logger,
-  Page,
   RunContext,
   SampleContext,
   SeedPair,

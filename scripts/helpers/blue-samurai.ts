@@ -7,13 +7,14 @@ import { byTestId, calculationTestId } from "./dom.js";
 import { buildSampleContext } from "./sample-context.js";
 import { setCalculationInput, setCalculationSelect } from "./form.js";
 
+import type { Page } from "rebrowser-puppeteer-core";
+
 import type {
   BlueSamuraiRound,
   BuildSampleContextsOptions,
   Game,
   GameSeeds,
   InteractionOptions,
-  Page,
   SampleContext,
 } from "../types.js";
 

@@ -1,4 +1,6 @@
-import type { Page, ResultStrategy } from "../types.js";
+import type { Page } from "rebrowser-puppeteer-core";
+
+import type { ResultStrategy } from "../types.js";
 
 const FINAL_RESULT_HEADING = "Final Result";
 

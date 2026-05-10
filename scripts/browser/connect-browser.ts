@@ -1,6 +1,6 @@
 import { connect } from "puppeteer-real-browser";
 
-import type { Browser, Page } from "../types.js";
+import type { Browser, Page } from "rebrowser-puppeteer-core";
 
 // Keep all puppeteer-real-browser specifics here so strategies and parsers stay browser-agnostic.
 export const connectBrowser = async ({

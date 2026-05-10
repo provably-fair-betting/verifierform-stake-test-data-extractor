@@ -1,6 +1,8 @@
 import { byTestId } from "../helpers/dom.js";
 
-import type { Page, ResultStrategy } from "../types.js";
+import type { Page } from "rebrowser-puppeteer-core";
+
+import type { ResultStrategy } from "../types.js";
 
 export const testIdOutputStrategy = (testId: string): ResultStrategy => {
   const selector = byTestId(testId);

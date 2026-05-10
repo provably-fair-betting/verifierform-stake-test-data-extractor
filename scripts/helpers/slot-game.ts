@@ -2,12 +2,13 @@ import { buildSampleContext } from "./sample-context.js";
 import { setCalculationInput } from "./form.js";
 import { findSlotSampleResults } from "./slot-simulation.js";
 
+import type { Page } from "rebrowser-puppeteer-core";
+
 import type {
   BuildSampleContextsOptions,
   Game,
   GameSeeds,
   InteractionOptions,
-  Page,
   SampleContext,
   SlotRound,
   VisibleReelSymbols,
