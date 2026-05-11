@@ -1,4 +1,4 @@
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 
 import { connectBrowser } from "./browser/connect-browser.js";
 import { generatorConfig } from "./config/generator-config.js";
@@ -38,6 +38,7 @@ type SamplerOptions = {
   gamesToRun?: Game[];
   logger?: Logger;
   nonceCountOverride?: number | null;
+  outputDir?: string | null;
   seedPairOverride?: SeedPair | null;
   slotSampleCountOverrides?: SlotCategoryCounts | null;
 };
@@ -75,6 +76,7 @@ export async function runSampler({
   gamesToRun = games,
   logger = silentLogger,
   nonceCountOverride = null,
+  outputDir = null,
   seedPairOverride = null,
   slotSampleCountOverrides = null,
 }: SamplerOptions = {}): Promise<void> {
@@ -82,7 +84,7 @@ export async function runSampler({
   assertGamesToRun(gamesToRun);
   logSamplerStart(logger, gamesToRun);
 
-  const runOutputDirectory = buildRunOutputDirectory();
+  const runOutputDirectory = buildRunOutputDirectory(outputDir);
 
   const { browser, page } = await connectBrowser();
 
@@ -128,7 +130,11 @@ function logSamplerStart(logger: Logger, gamesToRun: Game[]): void {
   logger.verbose(`[sampler] Output directory: ${generatorConfig.outputDir}`);
 }
 
-function buildRunOutputDirectory(): string {
+function buildRunOutputDirectory(outputDir: string | null): string {
+  if (outputDir !== null) {
+    return resolve(outputDir);
+  }
+
   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
   return join(generatorConfig.outputDir, timestamp);

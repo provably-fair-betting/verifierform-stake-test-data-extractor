@@ -185,6 +185,34 @@ Games can also declare `sampleCategoryDefaults` when they need deterministic cat
 
 Select coverage is deterministic. The generator starts from `defaultNonceCount` and raises the effective sample count when needed to cover every declared select combination at least once.
 
+## Consumer usage
+
+Install as a dev dependency in another project using the GitHub package URL pinned to a release tag:
+
+```bash
+pnpm add -D github:provably-fair-betting/verifierform-stake-testdata#v1.0.0
+```
+
+Add a script to the consumer's `package.json` and pass `--output-dir` to control where sample JSON files are written:
+
+```json
+"scripts": {
+  "sync:testdata": "stake-testdata --output-dir ./tests/lib/games/testcases"
+}
+```
+
+Then run it:
+
+```bash
+pnpm sync:testdata
+```
+
+When `--output-dir` is provided the generator writes one `{game}.json` file directly into the specified directory — no timestamped subdirectory is created. This keeps the output paths stable so the consumer project can version them. The output directory is created automatically if it does not exist.
+
+Without `--output-dir` the default behaviour is preserved: output goes into a timestamped subdirectory inside `output/` (e.g. `output/2026-05-11T12-00-00-000Z/`).
+
+All other flags (`--game`, `--nonce-count`, `--bonus-count`, `--retrigger-count`, `--client-seed`, `--server-seed`, `--verbose`, `--list-games`) work the same way in both modes.
+
 ## Troubleshooting
 
 - Form breaks if inputs are filled too quickly: increase `formDelayMs` in [scripts/config/generator-config.js](/Users/kyranrana/Projects/2025/freelance/provably-fair-betting/verifierform-stake-testdata/scripts/config/generator-config.js). Form updates are intentionally awaited one at a time to keep reactive UI state stable.

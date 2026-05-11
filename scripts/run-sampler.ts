@@ -9,6 +9,7 @@ type Command = {
   listGames: boolean;
   nonceCount: string | null;
   bonusCount: string | null;
+  outputDir: string | null;
   retriggerCount: string | null;
   serverSeed: string | null;
   verbose: boolean;
@@ -34,6 +35,7 @@ async function main(): Promise<void> {
     gamesToRun,
     logger,
     nonceCountOverride,
+    outputDir: command.outputDir,
     seedPairOverride,
     slotSampleCountOverrides,
   });
@@ -46,6 +48,7 @@ function parseCommand(args: string[]): Command {
     listGames: false,
     nonceCount: null,
     bonusCount: null,
+    outputDir: null,
     retriggerCount: null,
     serverSeed: null,
     verbose: false,
@@ -65,6 +68,18 @@ function parseCommand(args: string[]): Command {
 
     if (argument === "--list-games") {
       command.listGames = true;
+      continue;
+    }
+
+    if (argument === "--output-dir") {
+      const outputDir = args[index + 1] ?? null;
+
+      if (!outputDir) {
+        throw new Error(`Missing value for "${argument}"`);
+      }
+
+      command.outputDir = outputDir;
+      index += 1;
       continue;
     }
 
