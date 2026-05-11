@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/provably-fair-betting/verifierform-stake-testdata/compare/v1.0.0...v1.0.1) (2026-05-11)
+
+
+### Chores
+
+* add version badge and fold generation into release-please workflow ([9f03cca](https://github.com/provably-fair-betting/verifierform-stake-testdata/commit/9f03ccadb3cda962f9b3e456c69c14c411b7b692))
+
 ## 1.0.0 (2026-05-11)
 
 
