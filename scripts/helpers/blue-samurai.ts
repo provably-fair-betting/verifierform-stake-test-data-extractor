@@ -304,27 +304,20 @@ export async function readVerifiedBlueSamuraiResult(
             return null;
           }
 
-          const setControlValue = (
-            element: HTMLInputElement | HTMLSelectElement,
-            value: string,
-          ) => {
-            const prototype =
-              element instanceof HTMLSelectElement
-                ? HTMLSelectElement.prototype
-                : HTMLInputElement.prototype;
-            const descriptor = Object.getOwnPropertyDescriptor(
-              prototype,
-              "value",
-            );
-
-            descriptor?.set?.call(element, value);
-            element.dispatchEvent(new Event("input", { bubbles: true }));
-            element.dispatchEvent(new Event("change", { bubbles: true }));
-          };
-
           for (const lookupCheck of lookupChecks) {
-            setControlValue(lookupInput, String(lookupCheck.float));
-            setControlValue(outerSelect, lookupCheck.outer ? "Yes" : "No");
+            Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(
+              lookupInput,
+              String(lookupCheck.float),
+            );
+            lookupInput.dispatchEvent(new Event("input", { bubbles: true }));
+            lookupInput.dispatchEvent(new Event("change", { bubbles: true }));
+
+            Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value")?.set?.call(
+              outerSelect,
+              lookupCheck.outer ? "Yes" : "No",
+            );
+            outerSelect.dispatchEvent(new Event("input", { bubbles: true }));
+            outerSelect.dispatchEvent(new Event("change", { bubbles: true }));
             searchButton.click();
             await new Promise((resolve) => globalThis.setTimeout(resolve, 50));
 
