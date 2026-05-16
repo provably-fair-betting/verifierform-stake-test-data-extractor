@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.2](https://github.com/provably-fair-betting/verifierform-stake-testdata/compare/v1.0.1...v1.0.2) (2026-05-16)
+
+
+### Chores
+
+* remove ci from release-please changelog sections ([44dcece](https://github.com/provably-fair-betting/verifierform-stake-testdata/commit/44dcecea7a1276cecc9bcdeab216846482f54b7b))
+* remove ci from release-please changelog sections ([4fa81ad](https://github.com/provably-fair-betting/verifierform-stake-testdata/commit/4fa81ade8234cb09d37bab3d48bc57e83dcb10e4))
+* update pnpm lockfile to match package.json specifiers ([4e7da93](https://github.com/provably-fair-betting/verifierform-stake-testdata/commit/4e7da935fe22a0a3058e3c5847e11709d961997b))
+* update version badge [skip ci] ([6114176](https://github.com/provably-fair-betting/verifierform-stake-testdata/commit/611417644d5fe9a9d60a7b8abb8a64664564785b))
+
 ## [1.0.1](https://github.com/provably-fair-betting/verifierform-stake-testdata/compare/v1.0.0...v1.0.1) (2026-05-11)
 
 
