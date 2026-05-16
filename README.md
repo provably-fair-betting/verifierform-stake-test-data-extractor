@@ -1,6 +1,7 @@
 # verifierform-stake-testdata
 
-![Version](badges/version.svg)
+[![CI](https://github.com/provably-fair-betting/verifierform-stake-testdata/actions/workflows/ci.yml/badge.svg)](https://github.com/provably-fair-betting/verifierform-stake-testdata/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/github/v/release/provably-fair-betting/verifierform-stake-testdata)](https://github.com/provably-fair-betting/verifierform-stake-testdata/releases/latest)
 
 Generate deterministic JSON sample files by driving a verifier calculation page with `puppeteer-real-browser`. The project is organized so browser bootstrapping, form interaction, result extraction, parsing, game configuration, and output writing stay separate.
 
