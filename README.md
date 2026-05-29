@@ -10,7 +10,7 @@ Generate deterministic JSON sample files by driving a verifier calculation page 
 Install as a dev dependency in another project using the GitHub package URL pinned to a release tag:
 
 ```bash
-pnpm add -D github:provably-fair-betting/verifierform-stake-testdata#v1.0.0
+pnpm add -D github:provably-fair-betting/verifierform-stake-test-data-extractor#v1.0.0
 ```
 
 Add a script to the consumer's `package.json` and pass `--output-dir` to control where sample JSON files are written:
