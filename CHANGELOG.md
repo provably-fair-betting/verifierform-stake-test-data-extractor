@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/provably-fair-betting/verifierform-stake-test-data-extractor/compare/v1.0.2...v2.0.0) (2026-05-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* Rename published package to verifierform-stake-test-data-extractor
+
+### Features
+
+* rename to verifierform-stake-test-data-extractor ([#7](https://github.com/provably-fair-betting/verifierform-stake-test-data-extractor/issues/7)) ([5fbadb5](https://github.com/provably-fair-betting/verifierform-stake-test-data-extractor/commit/5fbadb58417638c7b690a325b04d3fe3ba66bc9f))
+
 ## [1.0.2](https://github.com/provably-fair-betting/verifierform-stake-testdata/compare/v1.0.1...v1.0.2) (2026-05-16)
 
 
