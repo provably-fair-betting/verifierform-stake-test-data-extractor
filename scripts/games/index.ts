@@ -29,6 +29,7 @@ import { tarot } from "./tarot.js";
 import { tomeOfLife } from "./tome-of-life.js";
 import { videoPoker } from "./video-poker.js";
 import { wheel } from "./wheel.js";
+import { zoo } from "./zoo.js";
 
 import type { Game } from "../types.js";
 
@@ -65,4 +66,5 @@ export const games: Game[] = [
   tomeOfLife,
   videoPoker,
   wheel,
+  zoo,
 ];
