@@ -38,6 +38,10 @@ export const zoo: Game = {
 | `usesNonce` | No | Set `false` for games without a nonce field (default: `true`) |
 | `useDefaultSeedPair` | No | Set `false` for games with custom seed fields (default: `true`) |
 | `nonceCount` | No | Override the default number of samples for this game only |
+| `sampleCategoryDefaults` | No | Target counts per sample category for slot-style games (see Slot games below) |
+| `roundInputName` | No | Form input name used to set the round number when verifying slot results |
+| `buildSampleContexts` | No | Custom hook that replaces the default nonce/select traversal with game-specific sample planning |
+| `readVerifiedResult` | No | Custom hook for games that need direct DOM interaction per sample instead of a single result read |
 
 ## 3. Inputs
 
@@ -97,7 +101,46 @@ const parseZooResult = (rawResult: unknown): { animals: ZooAnimal[] } => {
 };
 ```
 
-## 7. Register the game
+## 7. Slot games
+
+Slot games have their own sample-planning and result-verification logic. Most can be created with the `createSlotGame()` factory instead of defining everything manually:
+
+```typescript
+import { createSlotGame } from "../helpers/slot-game.js";
+
+export const scarabSpins = createSlotGame({
+  name: "scarab-spins",
+  selectValue: "slotsScarab",
+  roundInputName: "slotsRound",
+});
+```
+
+`createSlotGame()` automatically wires up `buildSampleContexts`, `readVerifiedResult`, and `parseResult` for the standard slot flow. It also sets the default category targets via `sampleCategoryDefaults`:
+
+```typescript
+sampleCategoryDefaults: { bonus: 2, retrigger: 1 }
+```
+
+These defaults can be overridden at run time with `--bonus-count` and `--retrigger-count`.
+
+Use `createSlotGame()` when the game follows the standard slot layout. Define the `Game` object manually when the game has custom selects, a non-standard DOM layout, or its own category scheme — Bars and Drill are examples of this.
+
+### Blue Samurai
+
+Blue Samurai is a slot game but does not use `createSlotGame()`. It has four distinct sample categories instead of the standard two:
+
+```typescript
+sampleCategoryDefaults: {
+  bonus: 1,
+  specialRounds: 1,
+  bonusWithRetrigger: 1,
+  bonusWithSpecialRounds: 1,
+}
+```
+
+These are overridable at run time with the `--blue-samurai-*-count` flags. Any category not overridden falls back to its default; passing `0` suppresses it entirely.
+
+## 8. Register the game
 
 Add an import and an entry to the array in `scripts/games/index.ts`:
 
@@ -112,7 +155,7 @@ export const games: Game[] = [
 
 The array is sorted alphabetically by convention, but order does not affect behaviour.
 
-## 8. Verify
+## 9. Verify
 
 ```bash
 # Check the game name is discoverable
