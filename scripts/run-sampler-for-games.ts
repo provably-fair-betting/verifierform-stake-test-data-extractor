@@ -24,6 +24,7 @@ import { sleep } from "./helpers/wait.js";
 import type { Page } from "rebrowser-puppeteer-core";
 
 import type {
+  BlueSamuraiCategoryCounts,
   Game,
   InteractionOptions,
   Logger,
@@ -41,6 +42,7 @@ type SamplerOptions = {
   outputDir?: string | null;
   seedPairOverride?: SeedPair | null;
   slotSampleCountOverrides?: SlotCategoryCounts | null;
+  blueSamuraiCategoryCounts?: BlueSamuraiCategoryCounts | null;
 };
 
 type SamplePlanInternal = {
@@ -79,6 +81,7 @@ export async function runSampler({
   outputDir = null,
   seedPairOverride = null,
   slotSampleCountOverrides = null,
+  blueSamuraiCategoryCounts = null,
 }: SamplerOptions = {}): Promise<void> {
   ensureConfigLooksReady();
   assertGamesToRun(gamesToRun);
@@ -101,6 +104,7 @@ export async function runSampler({
       runOutputDirectory,
       seedPairOverride,
       slotSampleCountOverrides,
+      blueSamuraiCategoryCounts,
     };
 
     await writeSamplesForAllGames(runContext, gamesToRun);
