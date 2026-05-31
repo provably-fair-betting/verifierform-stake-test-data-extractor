@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.0](https://github.com/provably-fair-betting/verifierform-stake-test-data-extractor/compare/v2.0.0...v2.1.0) (2026-05-31)
+
+
+### Features
+
+* add Zoo game extractor ([#9](https://github.com/provably-fair-betting/verifierform-stake-test-data-extractor/issues/9)) ([308f4cb](https://github.com/provably-fair-betting/verifierform-stake-test-data-extractor/commit/308f4cbf20167765ccfedc1645dd85835a56f6fd))
+* Blue Samurai category overrides and docs improvements ([#11](https://github.com/provably-fair-betting/verifierform-stake-test-data-extractor/issues/11)) ([7e18886](https://github.com/provably-fair-betting/verifierform-stake-test-data-extractor/commit/7e188862c57376c7c19183a4223b5dd68a9d7cb8))
+
 ## [2.0.0](https://github.com/provably-fair-betting/verifierform-stake-test-data-extractor/compare/v1.0.2...v2.0.0) (2026-05-29)
 
 
