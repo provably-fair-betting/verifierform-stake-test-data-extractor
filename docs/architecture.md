@@ -20,14 +20,27 @@ scripts/
 
 ## Data flow
 
+Standard games:
 ```
 CLI args
-  → run-sampler.ts      (parse flags, resolve game list)
+  → run-sampler.ts            (parse flags, resolve game list)
   → run-sampler-for-games.ts  (connect browser, iterate games)
-    → form.ts           (fill inputs, selects, trigger calculation)
-    → ResultStrategy    (read raw DOM text)
-    → game.parseResult  (convert raw text → typed object)
-    → output.ts         (write {game}.json)
+    → form.ts                 (fill inputs, selects, trigger calculation)
+    → ResultStrategy.read     (read raw DOM text)
+    → game.parseResult        (convert raw text → typed object)
+    → output.ts               (write {game}.json)
+```
+
+Slot games and Blue Samurai:
+```
+CLI args
+  → run-sampler.ts                  (parse flags, resolve game list)
+  → run-sampler-for-games.ts        (connect browser, iterate games)
+    → game.buildSampleContexts      (scan nonces offline, classify into categories)
+    → form.ts                       (fill inputs per sample)
+    → game.readVerifiedResult       (step through rounds, read DOM per round)
+    → game.parseResult              (verify simulated state matches DOM)
+    → output.ts                     (write {game}.json)
 ```
 
 ## Game definition
@@ -37,7 +50,15 @@ Every game is a `Game` object (see `scripts/types.ts`). The two required pieces 
 - **`inputs` / `selects`** — declarative form configuration. The orchestrator fills these before each sample.
 - **`parseResult`** — converts the raw string from the page into the final JSON object for that sample.
 
-Everything else (`resultStrategy`, `usesNonce`, `useDefaultSeedPair`) opts the game in or out of shared orchestration behaviours.
+Everything else opts the game in or out of shared orchestration behaviours:
+
+- `resultStrategy` — which DOM reader to use (default flow only; not used when `readVerifiedResult` is set)
+- `usesNonce` / `useDefaultSeedPair` — whether the game uses the shared nonce and seed-pair fields
+- `nonceCount` — per-game sample count override
+- `buildSampleContexts` — replaces the default nonce/select traversal with custom sample planning (used by slot games and Blue Samurai)
+- `readVerifiedResult` — replaces the single result read with direct per-sample DOM interaction (used by slot games and Blue Samurai)
+- `sampleCategoryDefaults` — declares target counts per sample category; only meaningful when `buildSampleContexts` is set
+- `roundInputName` — the form input name used to step through rounds during slot verification
 
 ## Result strategies
 
@@ -58,7 +79,30 @@ When a game declares `selects`, the orchestrator builds the Cartesian product of
 
 ## Slot games
 
-Slot-style games (blue-samurai, bars, etc.) have a special sampling mode that tracks bonus and retrigger occurrences. `sampleCategoryDefaults` declares how many bonus and retrigger samples to target. The helper in `scripts/helpers/slot-game.ts` drives this logic separately from the standard nonce loop.
+Slot games replace both sample-planning and result-reading with their own implementations via `buildSampleContexts` and `readVerifiedResult`.
+
+### Standard slots (`createSlotGame`)
+
+Most slot games are created with the `createSlotGame()` factory in `scripts/helpers/slot-game.ts`. This wires up:
+
+- **`buildSampleContexts` → `buildSlotSampleContexts`** — scans nonces offline to find samples that fall into the `bonus`, `retrigger`, or `simple` categories, targeting the counts in `sampleCategoryDefaults` (default: `{ bonus: 2, retrigger: 1 }`). Remaining samples are ordinary.
+- **`readVerifiedResult` → `readVerifiedSlotResult`** — after the calculator page is ready, steps through each expected round using `roundInputName`, reads the visible reel symbols and center indices from the DOM, and returns them for `parseResult` to verify.
+- **`parseResult` → `parseSlotVerificationResult`** — compares the simulated reel state against what Stake rendered; throws if they diverge.
+
+The `--bonus-count` and `--retrigger-count` CLI flags override `sampleCategoryDefaults` at run time for all standard slot games.
+
+### Blue Samurai
+
+Blue Samurai uses entirely custom helpers (`scripts/helpers/blue-samurai.ts`) because it has four categories instead of two:
+
+| Category key | Category label | Default count |
+| ------------ | -------------- | ------------- |
+| `bonus` | `bonus` | 1 |
+| `specialRounds` | `special-rounds` | 1 |
+| `bonusWithRetrigger` | `bonus-with-retrigger` | 1 |
+| `bonusWithSpecialRounds` | `bonus-with-special-rounds` | 1 |
+
+Remaining samples become `ordinary`. Each category is independently overridable via the `--blue-samurai-*-count` CLI flags. The scan uses `simulateBlueSamuraiRounds` and `classifyBlueSamuraiRounds` (in `scripts/helpers/blue-samurai-simulation.ts`) to classify nonces offline before touching the browser, up to a limit of 250 000 nonces.
 
 ## Parsers
 
