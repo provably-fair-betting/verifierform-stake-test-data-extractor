@@ -1,7 +1,13 @@
 import { games } from "./games/index.js";
 import { runSampler } from "./run-sampler-for-games.js";
 
-import type { Game, Logger, SeedPair, SlotCategoryCounts } from "./types.js";
+import type {
+  BlueSamuraiCategoryCounts,
+  Game,
+  Logger,
+  SeedPair,
+  SlotCategoryCounts,
+} from "./types.js";
 
 type Command = {
   clientSeed: string | null;
@@ -13,6 +19,10 @@ type Command = {
   retriggerCount: string | null;
   serverSeed: string | null;
   verbose: boolean;
+  bsBonusCount: string | null;
+  bsSpecialRoundsCount: string | null;
+  bsBonusRetriggerCount: string | null;
+  bsBonusSpecialRoundsCount: string | null;
 };
 
 main().catch(handleFatalError);
@@ -23,6 +33,7 @@ async function main(): Promise<void> {
   const seedPairOverride = resolveSeedPairOverride(command);
   const nonceCountOverride = resolveNonceCountOverride(command);
   const slotSampleCountOverrides = resolveSlotSampleCountOverrides(command);
+  const blueSamuraiCategoryCounts = resolveBlueSamuraiCategoryCountOverrides(command);
 
   if (command.listGames) {
     printAvailableGames();
@@ -38,6 +49,7 @@ async function main(): Promise<void> {
     outputDir: command.outputDir,
     seedPairOverride,
     slotSampleCountOverrides,
+    blueSamuraiCategoryCounts,
   });
 }
 
@@ -52,6 +64,10 @@ function parseCommand(args: string[]): Command {
     retriggerCount: null,
     serverSeed: null,
     verbose: false,
+    bsBonusCount: null,
+    bsSpecialRoundsCount: null,
+    bsBonusRetriggerCount: null,
+    bsBonusSpecialRoundsCount: null,
   };
 
   for (let index = 0; index < args.length; index += 1) {
@@ -155,6 +171,38 @@ function parseCommand(args: string[]): Command {
       continue;
     }
 
+    if (argument === "--blue-samurai-bonus-count") {
+      const value = args[index + 1] ?? null;
+      if (!value) throw new Error(`Missing value for "${argument}"`);
+      command.bsBonusCount = value;
+      index += 1;
+      continue;
+    }
+
+    if (argument === "--blue-samurai-special-rounds-count") {
+      const value = args[index + 1] ?? null;
+      if (!value) throw new Error(`Missing value for "${argument}"`);
+      command.bsSpecialRoundsCount = value;
+      index += 1;
+      continue;
+    }
+
+    if (argument === "--blue-samurai-bonus-retrigger-count") {
+      const value = args[index + 1] ?? null;
+      if (!value) throw new Error(`Missing value for "${argument}"`);
+      command.bsBonusRetriggerCount = value;
+      index += 1;
+      continue;
+    }
+
+    if (argument === "--blue-samurai-bonus-special-rounds-count") {
+      const value = args[index + 1] ?? null;
+      if (!value) throw new Error(`Missing value for "${argument}"`);
+      command.bsBonusSpecialRoundsCount = value;
+      index += 1;
+      continue;
+    }
+
     if (!argument.startsWith("-")) {
       command.gameNames.push(argument);
       continue;
@@ -218,6 +266,38 @@ function resolveSlotSampleCountOverrides(command: Command): SlotCategoryCounts |
     bonusCount: bonusCount ?? 0,
     retriggerCount: retriggerCount ?? 0,
   };
+}
+
+function resolveBlueSamuraiCategoryCountOverrides(
+  command: Command,
+): BlueSamuraiCategoryCounts | null {
+  const bonus = resolveNonNegativeIntegerFlag(
+    command.bsBonusCount,
+    "--blue-samurai-bonus-count",
+  );
+  const specialRounds = resolveNonNegativeIntegerFlag(
+    command.bsSpecialRoundsCount,
+    "--blue-samurai-special-rounds-count",
+  );
+  const bonusWithRetrigger = resolveNonNegativeIntegerFlag(
+    command.bsBonusRetriggerCount,
+    "--blue-samurai-bonus-retrigger-count",
+  );
+  const bonusWithSpecialRounds = resolveNonNegativeIntegerFlag(
+    command.bsBonusSpecialRoundsCount,
+    "--blue-samurai-bonus-special-rounds-count",
+  );
+
+  if (
+    bonus === null &&
+    specialRounds === null &&
+    bonusWithRetrigger === null &&
+    bonusWithSpecialRounds === null
+  ) {
+    return null;
+  }
+
+  return { bonus, specialRounds, bonusWithRetrigger, bonusWithSpecialRounds };
 }
 
 function resolveNonNegativeIntegerFlag(

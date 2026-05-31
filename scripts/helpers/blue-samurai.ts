@@ -10,6 +10,7 @@ import { setCalculationInput, setCalculationSelect } from "./form.js";
 import type { Page } from "rebrowser-puppeteer-core";
 
 import type {
+  BlueSamuraiCategoryCounts,
   BlueSamuraiRound,
   BuildSampleContextsOptions,
   Game,
@@ -65,10 +66,12 @@ export async function buildBlueSamuraiSampleContexts({
   gameSeeds,
   logger,
   samplePlan,
+  runContext,
 }: BuildSampleContextsOptions): Promise<SampleContext[]> {
   const blueSamuraiCategoryCounts = resolveBlueSamuraiCategoryCounts(
     game,
     samplePlan.sampleCount,
+    runContext.blueSamuraiCategoryCounts,
   );
   const samples = findBlueSamuraiSampleResults({
     clientSeed: (gameSeeds as GameSeeds).clientSeed,
@@ -100,6 +103,7 @@ export async function buildBlueSamuraiSampleContexts({
 function resolveBlueSamuraiCategoryCounts(
   game: Game,
   sampleCount: number,
+  overrides: BlueSamuraiCategoryCounts | null | undefined,
 ): BlueSamuraiCategoryTargets {
   if (!Number.isInteger(sampleCount) || sampleCount <= 0) {
     throw new Error(
@@ -109,10 +113,21 @@ function resolveBlueSamuraiCategoryCounts(
 
   const configuredCounts = game.sampleCategoryDefaults ?? {};
   assertSupportedBlueSamuraiCategoryDefaults(game, configuredCounts);
+
+  const effectiveCounts: Record<string, number | undefined> = { ...configuredCounts };
+  if (overrides) {
+    for (const { key } of BLUE_SAMURAI_CATEGORY_DEFINITIONS) {
+      const override = overrides[key as keyof typeof overrides];
+      if (override !== null && override !== undefined) {
+        effectiveCounts[key] = override;
+      }
+    }
+  }
+
   const counts = Object.fromEntries(
     BLUE_SAMURAI_CATEGORY_DEFINITIONS.map(({ key, category }) => [
       category,
-      resolveBlueSamuraiCategoryCount(game, key, configuredCounts[key]),
+      resolveBlueSamuraiCategoryCount(game, key, effectiveCounts[key]),
     ]),
   );
   const configuredTotal = Object.values(counts).reduce(

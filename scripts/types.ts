@@ -43,6 +43,13 @@ export type SlotCategoryCounts = {
   retriggerCount: number;
 };
 
+export type BlueSamuraiCategoryCounts = {
+  bonus: number | null;
+  specialRounds: number | null;
+  bonusWithRetrigger: number | null;
+  bonusWithSpecialRounds: number | null;
+};
+
 export type VisibleReelSymbols = {
   above: string;
   center: string;
@@ -152,6 +159,7 @@ export type RunContext = {
   runOutputDirectory: string;
   seedPairOverride: SeedPair | null;
   slotSampleCountOverrides: SlotCategoryCounts | null;
+  blueSamuraiCategoryCounts: BlueSamuraiCategoryCounts | null;
 };
 
 export type GeneratorConfig = {

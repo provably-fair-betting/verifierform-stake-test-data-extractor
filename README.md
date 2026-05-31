@@ -59,6 +59,10 @@ pnpm sync:testdata -- --game zoo
 | `--server-seed`     | Override the server seed used for all standard seed-pair games in this run   |
 | `--bonus-count`     | Override the target number of bonus samples for slot-style games             |
 | `--retrigger-count` | Override the target number of retrigger samples for slot-style games         |
+| `--blue-samurai-bonus-count` | Override the Blue Samurai bonus category sample count           |
+| `--blue-samurai-special-rounds-count` | Override the Blue Samurai special rounds category sample count |
+| `--blue-samurai-bonus-retrigger-count` | Override the Blue Samurai bonus-with-retrigger category sample count |
+| `--blue-samurai-bonus-special-rounds-count` | Override the Blue Samurai bonus-with-special-rounds category sample count |
 | `--verbose`         | Log per-sample progress in addition to the normal startup and completion messages |
 
 ## Output
